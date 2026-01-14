@@ -20,4 +20,5 @@ con = mysql.connector.connect(
     database = "AiBtcQuantLandia"
 )
 ```
-
+## 3. tworzenie tabel: 
+uruchomić plik 'pierwsza_tabela.sql' na połączeniu z bazą
