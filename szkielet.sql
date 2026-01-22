@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS attractions (
     attraction_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    attraction_name VARCHAR(50),
+    attraction_name VARCHAR(100),
+    vr BOOLEAN,
     built_date DATETIME
 );
 
