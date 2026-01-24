@@ -33,6 +33,11 @@ class Baza:
         for (table_name,) in self.cursor:
             print(table_name)
 
+    def count_table(self, name):
+        self.cursor.execute(f"SELECT COUNT(*) FROM {name}")
+        result = self.cursor.fetchone()
+        print(result[0])
+
     def describe_table(self, name):
         self.cursor.execute(f"DESCRIBE {name}")
         for row in self.cursor:
@@ -45,6 +50,11 @@ class Baza:
 
     def clear_table(self, name):
         self.cursor.execute(f"DELETE FROM {name}")
+        self.con.commit()
+
+    def clear_truncate_table(self, name):
+        self.cursor.execute(f"DELETE FROM {name}")
+        self.cursor.execute(f"ALTER TABLE {name} AUTO_INCREMENT = 1;")
         self.con.commit()
 
     def reset_db(self):
