@@ -1,6 +1,6 @@
 from budowa import Baza
 from budowa import create_db
-from insertion import insert_guests, insert_attractions, insert_prices, insert_payments
+from insertion import insert_data
 
 
 
@@ -17,22 +17,31 @@ baza.stworz_tabele()
 # baza.clear_table("prices")
 # baza.clear_truncate_table("payment_ticket")
 # baza.clear_truncate_table("payments")
-insert_guests(baza)
-insert_attractions(baza)
-insert_prices(baza)
-insert_payments(baza)
+insert_data(baza)
 
 # baza.show_table("payments")
 # baza.show_table("payment_ticket")
-baza.count_table("payment_ticket")
+baza.show_table("incidents")
 
-baza.cursor.execute("""
-    SELECT COUNT(DISTINCT payment_id)
-    FROM payment_ticket
-""")
 
-(count,) = baza.cursor.fetchone()
-print(count)
+# baza.cursor.execute("""
+# SELECT DISTINCT
+#     g.guest_id,
+#     a.attraction_name,
+#     p.payment_date
+# FROM guests g
+# JOIN payments p        ON p.guest_id = g.guest_id
+# JOIN payment_ticket pt ON pt.payment_id = p.payment_id
+# JOIN prices pr         ON pr.ticket_id = pt.ticket_id
+# JOIN attractions a     ON a.attraction_id = pr.attraction_id
+# ORDER BY g.guest_id, a.attraction_name;
+# """)
+
+# for row in baza.cursor:
+#     print(row)
+
+
+
 # baza.show_table("attractions")
 
 

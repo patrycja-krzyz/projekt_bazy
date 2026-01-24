@@ -2,6 +2,8 @@ from generators.guests import generate_guests
 from generators.attractions import generate_attractions
 from generators.prices import generate_prices
 from generators.payments import generate_payments, generate_payment_ticket
+from generators.incident_type import generate_incident_types
+from generators.incidents import generate_incidents
 
 
 def table_row_count(cursor, table_name) -> int:
@@ -102,10 +104,40 @@ def insert_payments(baza):
         )
 
 
-    # df_to_sql(
-    #     baza,
-    #     payments_tickets,
-    #     table="payment_ticket",
-    #     columns=["payment_id", "ticket_id"],
-    #     batch_size=len(payments_tickets)
-    # )
+def insert_incident_types(baza):
+    if table_row_count(baza.cursor, "incident_type") > 0:
+        print("Incident_type table already has data. Skipping insertion.")
+        return
+    
+    incident_types = generate_incident_types()
+    
+    df_to_sql(
+        baza,
+        incident_types,
+        table="incident_type",
+        columns=["name", "risk_level"],
+        batch_size=100
+    )
+
+def insert_incidents(baza, num):
+    if table_row_count(baza.cursor, "incidents") > 0:
+        print("Incidents table already has data. Skipping insertion.")
+        return
+    
+    incidents = generate_incidents(baza, num)
+
+    df_to_sql(
+        baza, 
+        incidents,
+        table="incidents",
+        columns=["incident_type_id", "guest_id", "attraction_id", "incident_date", "description"],
+        batch_size=num
+    )
+
+def insert_data(baza):
+    insert_guests(baza)
+    insert_attractions(baza)
+    insert_prices(baza)
+    insert_payments(baza)
+    insert_incident_types(baza)
+    insert_incidents(baza, 50)
