@@ -4,6 +4,11 @@ from generators.prices import generate_prices
 from generators.payments import generate_payments, generate_payment_ticket
 from generators.incident_type import generate_incident_types
 from generators.incidents import generate_incidents
+from generators.insuranse import generate_guest_insurance, generate_insurance
+from generators.employees import generate_employees
+from generators.costs import generate_costs
+from generators.malfunctions import generate_malfunctions
+from generators.inspections import generate_inspections
 
 
 def table_row_count(cursor, table_name) -> int:
@@ -19,7 +24,7 @@ def _py(x):
         return x.item()
     return x
 
-def df_to_sql(baza, df, table: str, columns: list[str], batch_size: int):
+def df_to_sql(baza, df, table: str, columns: list[str], batch_size: int = 100):
     df = df.where(df.notna(), None)  
     rows = [tuple(map(_py, row)) for row in df.to_numpy()]
     placeholders = ", ".join(["%s"] * len(columns))
@@ -134,6 +139,77 @@ def insert_incidents(baza, num):
         batch_size=num
     )
 
+def insert_insurance(baza):
+
+    insurance = generate_insurance()
+    guest_insurance = generate_guest_insurance(baza)
+
+
+    if table_row_count(baza.cursor, "insurance") > 0:
+        print("Insurance table already has data. Skipping insertion.")
+    else:
+        df_to_sql(baza,
+                  insurance,
+                  "insurance",
+                  columns= ["name", "coverage_amount"])
+        
+    if table_row_count(baza.cursor, "guest_insurance") > 0:
+        print("Guest_insurance table already has data. Skipping insertion.")
+    else:
+        df_to_sql(baza,
+                  guest_insurance,
+                  "guest_insurance",
+                  columns=["guest_id", "insurance_id"])
+    
+
+def insert_employees(baza, min_salary, max_salary, number_of_months):
+    if table_row_count(baza.cursor, "employees") > 0:
+        print("Employees table already has data. Skipping insertion")
+        return
+    
+    employees = generate_employees(baza, min_salary, max_salary, number_of_months)
+
+    df_to_sql(baza,
+              employees,
+              "employees",
+              ["first_name", "last_name", "position", "salary", "hire_date", "attraction_id"])
+    
+def insert_costs(baza, min_amount, max_amount):
+    if table_row_count(baza.cursor, "costs") > 0:
+        print("Costs table already has data. Skipping insertion")
+        return
+    
+    costs = generate_costs(baza, min_amount, max_amount)
+
+    df_to_sql(baza,
+              costs,
+              "costs",
+              ["cost_type", "amount", "how_often", "attraction_id"])
+
+def insert_malfunctions(baza, possible_malfunctions_per_attraction, min_amount, max_amount, max_days_to_fix):
+    if table_row_count(baza.cursor, "malfunctions") > 0:
+        print("Malfunctions table already has data. Skipping insertion")
+        return
+    
+    malfunctions = generate_malfunctions(baza, possible_malfunctions_per_attraction, min_amount, max_amount, max_days_to_fix)
+
+    df_to_sql(baza,
+              malfunctions,
+              "malfunctions",
+              ["attraction_id", "accident_date", "fix_date", "comment", "fix_cost"])
+    
+def insert_inspections(baza, num):
+    if table_row_count(baza.cursor, "inspections") > 0:
+        print("Inspections table already has data. Skipping insertion")
+        return
+    
+    inspections = generate_inspections(baza, num)
+
+    df_to_sql(baza,
+              inspections,
+              "inspections",
+              ["attraction_id", "inspection_date", "result"])
+
 def insert_data(baza):
     insert_guests(baza)
     insert_attractions(baza)
@@ -141,3 +217,8 @@ def insert_data(baza):
     insert_payments(baza)
     insert_incident_types(baza)
     insert_incidents(baza, 50)
+    insert_insurance(baza)
+    insert_employees(baza, 5000, 7000, 6)
+    insert_costs(baza, 20000, 30000)
+    insert_malfunctions(baza, 3, 2000, 20000, 30)
+    insert_inspections(baza, 200)

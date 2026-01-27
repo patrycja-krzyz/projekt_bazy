@@ -14,14 +14,16 @@ baza.stworz_tabele()
 # baza.show_tables()
 
 
-# baza.clear_table("prices")
-# baza.clear_truncate_table("payment_ticket")
+# baza.clear_table("employees")
+# baza.clear_truncate_table("malfunctions")
 # baza.clear_truncate_table("payments")
 insert_data(baza)
 
 # baza.show_table("payments")
 # baza.show_table("payment_ticket")
-baza.show_table("incidents")
+# baza.show_table("guest_insurance")
+baza.show_table("inspections")
+baza.show_table("attractions")
 
 
 # baza.cursor.execute("""
