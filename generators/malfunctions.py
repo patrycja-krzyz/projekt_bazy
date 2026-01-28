@@ -32,7 +32,7 @@ def generate_malfunctions(baza, possible_malfunctions_per_attraction, minimal_co
     fix_costs = []
 
     for pair in pairs:
-        for i in range(random.randint(1, possible_malfunctions_per_attraction)):
+        for i in range(random.randint(0, possible_malfunctions_per_attraction+1)):
             attraction_ids.append(pair[0])
             accident_date = generate_accident_date(pair[1])
             fix_date = generate_fix_date(accident_date, max_days_for_fix)

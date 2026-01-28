@@ -2,17 +2,15 @@ import pandas as pd
 import random
 
 
-def generate_insurance() -> pd.DataFrame:
-    names = ["full insurance", "full children insurance", "partial insurance", "partial children insurance", "senior insurance"]
-    amount = [100000, 150000, 50000, 75000, 150000]
+def generate_insurance(insurance_list, amount_list) -> pd.DataFrame:
 
     df = pd.DataFrame({
-        "name": names,
-        "coverage_amount": amount
+        "name": insurance_list,
+        "coverage_amount": amount_list
     })
     return df
 
-def generate_guest_insurance(baza) -> pd.DataFrame:
+def generate_guest_insurance(baza, id_child_insurances, id_adult_insurances, id_senior_insurances) -> pd.DataFrame:
     guests = pd.read_sql("SELECT guest_id, birth_date FROM guests", con=baza.con)
     insurances = []
     today_year = pd.Timestamp.today().normalize().year
@@ -20,11 +18,11 @@ def generate_guest_insurance(baza) -> pd.DataFrame:
         birth_year = pd.to_datetime(row).year
         age = today_year - birth_year
         if age <= 18:
-            insurances.append(random.choice([2, 4]))
+            insurances.append(random.choice(id_child_insurances))
         elif age <= 65:
-            insurances.append(random.choice([1, 3]))
+            insurances.append(random.choice(id_adult_insurances))
         else:
-            insurances.append(5)
+            insurances.append(random.choice(id_senior_insurances))
         
     guests["insurance"] = insurances
 

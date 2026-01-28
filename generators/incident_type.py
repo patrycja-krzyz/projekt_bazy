@@ -1,20 +1,9 @@
 import pandas as pd
 
-def generate_incident_types() -> pd.DataFrame:
+def generate_incident_types(types_list, risk_list) -> pd.DataFrame:
     data = {
-        "name": [
-        "Mechanical failure",
-        "Electrical malfunction",
-        "Software system error",
-        "Operator mistake",
-        "Safety system failure",
-        "Fire hazard",
-        "Power outage",
-        "Minor equipment damage",
-        "Structural instability",
-        "Emergency evacuation"
-        ],
-        "risk_level": [5, 4, 3, 3, 5, 5, 2, 1, 4, 5]
+        "name": types_list,
+        "risk_level": risk_list
     }
 
     df_incident_type = pd.DataFrame(data)

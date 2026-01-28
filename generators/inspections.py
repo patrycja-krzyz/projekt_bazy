@@ -10,7 +10,7 @@ def generate_inspection_date(build_date):
     random_days = random.randint(0, between_days)
     return build_date + pd.Timedelta(days=random_days)
 
-def generate_inspections(baza, num):
+def generate_inspections(baza, num, possible_results):
     attractions_df = pd.read_sql("select attraction_id, built_date from attractions", con=baza.con)
 
     pairs = attractions_df[["attraction_id", "built_date"]].to_records(index=False).tolist()
@@ -19,7 +19,6 @@ def generate_inspections(baza, num):
     inspection_dates = []
     results = []
 
-    possible_results = ["No problems found", "There is possible malfunction"]
 
     for i in range(num):
         inspected_pair = random.choice(pairs)
