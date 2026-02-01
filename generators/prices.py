@@ -2,7 +2,7 @@ import random
 import pandas as pd
 
 
-def generate_prices(attractions_num, min_price=10, max_price=50) -> pd.DataFrame:
+def generate_prices(attractions_num, min_price=70, max_price=99) -> pd.DataFrame:
     prices = []
     attractions = []
     for i in range(attractions_num):

@@ -45,7 +45,7 @@ def generate_payments(baza, payments_tickets, open_hour, closure_hour) -> pd.Dat
     lst = payments_tickets.groupby("payment_id")["ticket_id"].apply(list)
     prices_df = pd.read_sql("SELECT * FROM prices", con=baza.con)
     price_dict = prices_df.set_index("ticket_id")["amount"].to_dict()
-    dates_to_gen = pd.date_range("2025-01-01", "2026-01-01")
+    dates_to_gen = pd.date_range("2025-01-01", "2026-01-31")
     for ls in lst:
         total = 0
         for ticket in ls:

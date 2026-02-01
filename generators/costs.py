@@ -9,9 +9,9 @@ def generate_costs(baza, min_amount, max_amount) -> pd.DataFrame:
     how_often_list = []
 
     for attraction_id in attractions:
-        cost_types.append('monthly cost')
+        cost_types.append('yearly cost')
         amounts.append(random.randint(min_amount, max_amount))
-        how_often_list.append("once_per_month")
+        how_often_list.append("once_per_year")
 
     df = pd.DataFrame({
         "cost_type": cost_types,

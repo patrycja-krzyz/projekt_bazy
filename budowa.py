@@ -10,7 +10,7 @@ class Baza:
             password = "haslo_maslo67",
             database = "AiBtcQuantLandia"
             )
-        self.cursor = self.con.cursor()
+        self.cursor = self.con.cursor(buffered=True)
 
     def zamknij_polaczenie(self):
         self.cursor.close()
@@ -53,13 +53,34 @@ class Baza:
         self.con.commit()
 
     def clear_truncate_table(self, name):
-        self.cursor.execute(f"DELETE FROM {name}")
-        self.cursor.execute(f"ALTER TABLE {name} AUTO_INCREMENT = 1;")
+        cur = self.con.cursor() 
+
+        cur.execute("SHOW FULL PROCESSLIST")
+        for row in cur.fetchall():
+            print(row)
+        cur.execute("KILL 151")
+        cur.execute("SET FOREIGN_KEY_CHECKS=0")
+        cur.execute(f"TRUNCATE TABLE `{name}`")         
+        cur.execute("SET FOREIGN_KEY_CHECKS=1")
+
+        self.con.commit()
+        cur.close()
+    def show_cons(self):
+        self.cursor.execute("SHOW FULL PROCESSLIST")
+        for row in self.cursor.fetchall():
+            print(row)
         self.con.commit()
 
+    def kill_cons(self, *ids):
+        for id in ids:
+            self.cursor.execute(f"KILL {id}")
+        self.con.commit()
     def reset_db(self):
-        self.cursor.execute("DROP DATABASE IF EXISTS AiBtcQuantLandia")
-        create_db()
+
+        self.cursor.execute("DROP DATABASE IF EXISTS aibtcquantlandia")
+        self.cursor.execute("CREATE DATABASE aibtcquantlandia")
+        self.cursor.execute("USE aibtcquantlandia")
+
 
 
 
