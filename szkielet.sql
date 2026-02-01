@@ -30,13 +30,6 @@ CREATE TABLE IF NOT EXISTS guests (
     birth_date DATE
 );
 
-CREATE TABLE IF NOT EXISTS visits (
-    visit_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    guest_id INT UNSIGNED,
-    visit_date DATETIME,
-    FOREIGN KEY (guest_id) REFERENCES guests(guest_id)
-);
-
 CREATE TABLE IF NOT EXISTS incident_type (
     incident_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),

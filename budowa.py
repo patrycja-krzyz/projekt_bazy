@@ -78,4 +78,4 @@ def create_db():
     con0.commit()
     cursor0.close()
     con0.close()
-    #tu dodawanie danych???
+
