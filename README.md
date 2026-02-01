@@ -51,5 +51,5 @@ znajduje się w pliku pt. "schemayt"
 Każda tabela ma jasno określony klucz główny. Żaden atrybut niekluczowy nie zależy częściowo od klucza – wszystkie atrybuty są albo częścią klucza, albo w pełni zależą od całego klucza. Nie występują nadmiarowe zależności funkcyjne między atrybutami niekluczowymi a częścią klucza. 
 
 ## opis, co było najtrudniejsze podczas realizacji projektu
-- Patrycja Krzyżostanek: "zacząć, a potem: wyrobić się"
+Najtrudniej było wymyślić strukturę bazy kompatybilną z potrzebnymi informacjami do odpowiedzi na pytania wymagane w analizie. Żeby ograniczyć niepotrzebne informacje (tabele, kolumny) do minimum, a zarazem posiadać wszystko, co potrzebne.
 
